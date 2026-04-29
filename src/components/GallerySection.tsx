@@ -41,7 +41,7 @@ const GallerySection = () => {
 
         <div className="relative w-full max-w-6xl mx-auto h-[100vh] md:h-[80vh] flex items-center justify-center">
           {images.map((img, index) => (
-            <PhotoCard key={index} {...img} index={index} total={images.length} />
+            <PhotoCard key={index} {...img} index={index} total={images.length} containerRef={containerRef} />
           ))}
         </div>
       </div>
@@ -57,9 +57,10 @@ interface PhotoCardProps {
   caption: string;
   index: number;
   total: number;
+  containerRef: React.RefObject<HTMLDivElement | null>;
 }
 
-const PhotoCard: React.FC<PhotoCardProps> = ({ src, rotation, x, y, caption, index }) => {
+const PhotoCard: React.FC<PhotoCardProps> = ({ src, rotation, x, y, caption, index, containerRef }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [zIndex, setZIndex] = useState(index);
   const [isDragging, setIsDragging] = useState(false);
@@ -107,7 +108,7 @@ const PhotoCard: React.FC<PhotoCardProps> = ({ src, rotation, x, y, caption, ind
         boxShadow: "10px 10px 0px rgba(26, 26, 46, 1)"
       }}
       drag
-      dragConstraints={{ left: -300, right: 300, top: -300, bottom: 300 }}
+      dragConstraints={containerRef}
       dragElastic={0.2}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
